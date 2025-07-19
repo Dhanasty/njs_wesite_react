@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
-import { MagnifyingGlassIcon, AdjustmentsHorizontalIcon, HeartIcon, StarIcon } from '@heroicons/react/24/outline'
+import { MagnifyingGlassIcon, AdjustmentsHorizontalIcon, HeartIcon } from '@heroicons/react/24/outline'
 import { StarIcon as StarSolidIcon, HeartIcon as HeartSolidIcon } from '@heroicons/react/24/solid'
 
 // Product data
@@ -454,7 +454,7 @@ export default function Catalog() {
                     </div>
                     <h3 className="text-xl font-semibold text-neutral-900 mb-2">No products found</h3>
                     <p className="text-neutral-600 mb-6">
-                      Try adjusting your filters or search terms to find what you're looking for.
+                      Try adjusting your filters or search terms to find what you&apos;re looking for.
                     </p>
                     <button
                       onClick={() => {

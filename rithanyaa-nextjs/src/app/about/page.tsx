@@ -93,7 +93,7 @@ export default function About() {
             About Nava Jothi Silks
           </h1>
           <p className="text-xl lg:text-2xl mb-8 max-w-3xl mx-auto">
-            Celebrating India's rich textile heritage through premium silk sarees that blend traditional craftsmanship with contemporary elegance
+            Celebrating India&apos;s rich textile heritage through premium silk sarees that blend traditional craftsmanship with contemporary elegance
           </p>
         </div>
       </section>
@@ -106,7 +106,7 @@ export default function About() {
               <h2 className="section-title mb-6">Our Story</h2>
               <p className="text-lg text-neutral-600 mb-6 leading-relaxed">
                 Founded in 2008, Nava Jothi Silks began as a passionate endeavor to preserve and celebrate 
-                India's magnificent textile traditions. What started as a small family business has 
+                India&apos;s magnificent textile traditions. What started as a small family business has 
                 grown into a trusted name in premium silk sarees, known for authenticity and quality.
               </p>
               <p className="text-lg text-neutral-600 mb-6 leading-relaxed">
@@ -170,7 +170,7 @@ export default function About() {
           <div className="text-center mb-16">
             <h2 className="section-title">Meet Our Team</h2>
             <p className="section-subtitle">
-              The passionate individuals behind Nava Jothi Silks' success and commitment to excellence
+              The passionate individuals behind Nava Jothi Silks&apos; success and commitment to excellence
             </p>
           </div>
 
@@ -291,7 +291,7 @@ export default function About() {
             Experience the Beauty of Traditional Silk
           </h2>
           <p className="text-xl mb-8 max-w-3xl mx-auto">
-            Discover our exquisite collections and be part of preserving India's textile heritage
+            Discover our exquisite collections and be part of preserving India&apos;s textile heritage
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/catalog" className="btn-secondary">

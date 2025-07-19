@@ -100,7 +100,7 @@ export default function Footer() {
               </p>
               
               <div className="space-y-3">
-                {contactInfo.map((item, index) => (
+                {contactInfo.map((item) => (
                   <div key={item.label} className="flex items-start gap-3">
                     <span className="text-secondary-400 mt-0.5 text-xl">{item.icon}</span>
                     <div>
