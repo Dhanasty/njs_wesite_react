@@ -14,7 +14,8 @@
       "Bash(move \"rithanyaa-nextjs\" \"nava-jothi-silks-nextjs\")",
       "Bash(mv:*)",
       "Bash(taskkill:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ],
     "deny": []
   }

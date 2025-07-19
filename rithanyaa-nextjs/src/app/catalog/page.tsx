@@ -454,7 +454,7 @@ export default function Catalog() {
                     </div>
                     <h3 className="text-xl font-semibold text-neutral-900 mb-2">No products found</h3>
                     <p className="text-neutral-600 mb-6">
-                      Try adjusting your filters or search terms to find what you&apos;re looking for.
+                      Try adjusting your filters or search terms to find what you're looking for.
                     </p>
                     <button
                       onClick={() => {
