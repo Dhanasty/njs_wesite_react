@@ -25,6 +25,18 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'unset'
+    }
+    
+    return () => {
+      document.body.style.overflow = 'unset'
+    }
+  }, [mobileMenuOpen])
+
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
@@ -53,8 +65,17 @@ export default function Header() {
         <div className="flex lg:hidden">
           <button
             type="button"
-            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-primary-700 hover:text-primary-900 transition-colors"
-            onClick={() => setMobileMenuOpen(true)}
+            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-primary-700 hover:text-primary-900 active:text-primary-900 transition-colors touch-manipulation"
+            onClick={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+              setMobileMenuOpen(true)
+            }}
+            onTouchStart={(e) => {
+              e.preventDefault()
+              setMobileMenuOpen(true)
+            }}
+            aria-label="Open main menu"
           >
             <span className="sr-only">Open main menu</span>
             <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
@@ -104,8 +125,16 @@ export default function Header() {
         <>
           {/* Backdrop */}
           <div
-            className="fixed inset-0 z-40 bg-black/20 backdrop-blur-sm lg:hidden"
-            onClick={() => setMobileMenuOpen(false)}
+            className="fixed inset-0 z-40 bg-black/20 backdrop-blur-sm lg:hidden touch-manipulation"
+            onClick={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+              setMobileMenuOpen(false)
+            }}
+            onTouchStart={(e) => {
+              e.preventDefault()
+              setMobileMenuOpen(false)
+            }}
           />
           
           {/* Mobile menu panel */}
@@ -122,8 +151,17 @@ export default function Header() {
               </Link>
               <button
                 type="button"
-                className="-m-2.5 rounded-md p-2.5 text-neutral-700 hover:text-primary-600 transition-colors"
-                onClick={() => setMobileMenuOpen(false)}
+                className="-m-2.5 rounded-md p-2.5 text-neutral-700 hover:text-primary-600 active:text-primary-600 transition-colors touch-manipulation"
+                onClick={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  setMobileMenuOpen(false)
+                }}
+                onTouchStart={(e) => {
+                  e.preventDefault()
+                  setMobileMenuOpen(false)
+                }}
+                aria-label="Close menu"
               >
                 <span className="sr-only">Close menu</span>
                 <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
