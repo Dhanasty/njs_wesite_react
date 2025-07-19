@@ -118,7 +118,7 @@ export default function SoftSico() {
                 comfort and style in her wardrobe.
               </p>
               <p className="text-lg text-neutral-600 mb-8 leading-relaxed">
-                Made with premium quality silk that's specially treated for softness, these sarees 
+                Made with premium quality silk thats specially treated for softness, these sarees 
                 offer an incredibly smooth texture and elegant drape. The contemporary designs and 
                 vibrant colors make them perfect for both professional and social occasions.
               </p>
