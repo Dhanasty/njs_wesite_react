@@ -146,7 +146,7 @@ export default function Header() {
             <div className="flex items-center justify-between">
               <Link href="/" className="-m-1.5 p-1.5" onClick={() => setMobileMenuOpen(false)}>
                 <Image
-                  src="/images/logos/nava-jothi-silks-logo.svg"
+                  src="/images/logos/nava_jothi_silks_logo.jpg"
                   alt="Nava Jothi Silks"
                   width={180}
                   height={45}

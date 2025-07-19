@@ -86,7 +86,7 @@ export default function Footer() {
             <div>
               <Link href="/" className="inline-block mb-6">
                 <Image
-                  src="/images/logos/nava-jothi-silks-logo.svg"
+                  src="/images/logos/nava_jothi_silks_logo.jpg"
                   alt="Nava Jothi Silks"
                   width={149}
                   height={34}
