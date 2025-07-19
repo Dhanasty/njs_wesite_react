@@ -39,7 +39,7 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
+      className={`fixed inset-x-0 top-0 z-40 transition-all duration-300 ${
         scrolled
           ? 'bg-white/95 backdrop-blur-md shadow-lg border-b border-primary-100'
           : 'bg-white/80 backdrop-blur-sm'
@@ -125,20 +125,24 @@ export default function Header() {
         <>
           {/* Backdrop */}
           <div
-            className="fixed inset-0 z-40 bg-black/20 backdrop-blur-sm lg:hidden touch-manipulation"
+            className="fixed inset-0 bg-black/50 lg:hidden touch-manipulation"
+            style={{zIndex: 9998}}
             onClick={(e) => {
               e.preventDefault()
               e.stopPropagation()
               setMobileMenuOpen(false)
             }}
-            onTouchStart={(e) => {
+            onTouchEnd={(e) => {
               e.preventDefault()
               setMobileMenuOpen(false)
             }}
           />
           
           {/* Mobile menu panel */}
-          <div className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-primary-900/10">
+          <div 
+            className="fixed inset-y-0 right-0 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm shadow-2xl"
+            style={{zIndex: 9999}}
+          >
             <div className="flex items-center justify-between">
               <Link href="/" className="-m-1.5 p-1.5" onClick={() => setMobileMenuOpen(false)}>
                 <Image
