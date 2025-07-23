@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  # Redis Database
+  redis:
+    image: redis:7-alpine
+    container_name: nava-jothi-redis-dev
+    restart: unless-stopped
+    ports:
+      - "6380:6379"  # Changed external port to 6380
+    volumes:
+      - redis_data_dev:/data
+    networks:
+      - nava-jothi-dev
+
+  # Backend Only (for development)
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.simple
+    container_name: nava-jothi-api-dev
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=development
+      - PORT=5000
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379  # Keep this as 6379 (internal Docker network)
+      - JWT_SECRET=dev-jwt-secret-key
+      - ADMIN_USERNAME=admin
+      - ADMIN_EMAIL=admin@navajothisilks.com
+      - ADMIN_PASSWORD=SecurePassword123!
+      - SESSION_SECRET=dev-session-secret
+      - CORS_ORIGINS=http://localhost:3000,http://localhost:5173
+    volumes:
+      - ./uploads:/app/uploads
+      - ./logs:/app/logs
+    depends_on:
+      - redis
+    networks:
+      - nava-jothi-dev
+
+networks:
+  nava-jothi-dev:
+    driver: bridge
+
+volumes:
+  redis_data_dev:
+    driver: local

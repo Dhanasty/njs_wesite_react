@@ -1,0 +1,225 @@
+const { createClient } = require('redis');
+const logger = require('./logger');
+
+// Redis client configuration
+const redisClient = createClient({
+  socket: {
+    host: process.env.REDIS_HOST || 'localhost',
+    port: process.env.REDIS_PORT || 6379,
+    connectTimeout: 10000,
+    commandTimeout: 5000
+  },
+  password: process.env.REDIS_PASSWORD || undefined,
+  database: process.env.REDIS_DB || 0
+});
+
+// Redis connection event handlers
+redisClient.on('connect', () => {
+  logger.info('🔗 Redis client connected');
+});
+
+redisClient.on('ready', () => {
+  logger.info('✅ Redis client ready');
+});
+
+redisClient.on('error', (err) => {
+  logger.error('❌ Redis client error:', err);
+});
+
+redisClient.on('end', () => {
+  logger.info('🔚 Redis client connection ended');
+});
+
+// Connect to Redis
+(async () => {
+  try {
+    await redisClient.connect();
+    logger.info('📡 Connected to Redis database');
+    
+    // Initialize default admin user if not exists
+    await initializeDefaultAdmin();
+    
+  } catch (error) {
+    logger.error('❌ Failed to connect to Redis:', error);
+    process.exit(1);
+  }
+})();
+
+// Initialize default admin user
+async function initializeDefaultAdmin() {
+  try {
+    const adminExists = await redisClient.exists('admin:admin@navajothisilks.com');
+    
+    if (!adminExists) {
+      const bcrypt = require('bcryptjs');
+      const hashedPassword = await bcrypt.hash(process.env.ADMIN_PASSWORD || 'SecurePassword123!', 12);
+      
+      const adminData = {
+        id: 'admin-001',
+        username: process.env.ADMIN_USERNAME || 'admin',
+        email: process.env.ADMIN_EMAIL || 'admin@navajothisilks.com',
+        password: hashedPassword,
+        role: 'admin',
+        createdAt: new Date().toISOString(),
+        lastLogin: null,
+        isActive: true
+      };
+      
+      await redisClient.setEx(`admin:${adminData.email}`, 0, JSON.stringify(adminData));
+      await redisClient.setEx(`admin:id:${adminData.id}`, 0, adminData.email);
+      
+      logger.info('👤 Default admin user created');
+      logger.info(`📧 Admin email: ${adminData.email}`);
+      logger.info(`🔑 Admin password: ${process.env.ADMIN_PASSWORD || 'SecurePassword123!'}`);
+    }
+  } catch (error) {
+    logger.error('❌ Failed to initialize default admin:', error);
+  }
+}
+
+// Redis utility functions
+const RedisUtils = {
+  // Product operations
+  async createProduct(productData) {
+    const productId = `product:${Date.now()}:${Math.random().toString(36).substr(2, 9)}`;
+    const product = {
+      ...productData,
+      id: productId,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    
+    await redisClient.setEx(productId, 0, JSON.stringify(product));
+    await redisClient.sAdd('products:all', productId);
+    await redisClient.sAdd(`products:category:${product.category}`, productId);
+    
+    return product;
+  },
+
+  async getProduct(productId) {
+    const productData = await redisClient.get(productId);
+    return productData ? JSON.parse(productData) : null;
+  },
+
+  async updateProduct(productId, updateData) {
+    const existingProduct = await this.getProduct(productId);
+    if (!existingProduct) return null;
+    
+    const updatedProduct = {
+      ...existingProduct,
+      ...updateData,
+      updatedAt: new Date().toISOString()
+    };
+    
+    await redisClient.setEx(productId, 0, JSON.stringify(updatedProduct));
+    return updatedProduct;
+  },
+
+  async deleteProduct(productId) {
+    const product = await this.getProduct(productId);
+    if (!product) return false;
+    
+    await redisClient.del(productId);
+    await redisClient.sRem('products:all', productId);
+    await redisClient.sRem(`products:category:${product.category}`, productId);
+    
+    return true;
+  },
+
+  async getAllProducts() {
+    const productIds = await redisClient.sMembers('products:all');
+    const products = [];
+    
+    for (const productId of productIds) {
+      const product = await this.getProduct(productId);
+      if (product) products.push(product);
+    }
+    
+    return products.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  },
+
+  async getProductsByCategory(category) {
+    const productIds = await redisClient.sMembers(`products:category:${category}`);
+    const products = [];
+    
+    for (const productId of productIds) {
+      const product = await this.getProduct(productId);
+      if (product) products.push(product);
+    }
+    
+    return products.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  },
+
+  async searchProducts(query) {
+    const allProducts = await this.getAllProducts();
+    const searchTerm = query.toLowerCase();
+    
+    return allProducts.filter(product =>
+      product.name.toLowerCase().includes(searchTerm) ||
+      product.description.toLowerCase().includes(searchTerm) ||
+      product.category.toLowerCase().includes(searchTerm)
+    );
+  },
+
+  // Admin operations
+  async getAdminByEmail(email) {
+    const adminData = await redisClient.get(`admin:${email}`);
+    return adminData ? JSON.parse(adminData) : null;
+  },
+
+  async updateAdminLastLogin(email) {
+    const admin = await this.getAdminByEmail(email);
+    if (admin) {
+      admin.lastLogin = new Date().toISOString();
+      await redisClient.setEx(`admin:${email}`, 0, JSON.stringify(admin));
+    }
+  },
+
+  // Session operations
+  async createSession(sessionId, data, expireSeconds = 86400) {
+    await redisClient.setEx(`session:${sessionId}`, expireSeconds, JSON.stringify(data));
+  },
+
+  async getSession(sessionId) {
+    const sessionData = await redisClient.get(`session:${sessionId}`);
+    return sessionData ? JSON.parse(sessionData) : null;
+  },
+
+  async deleteSession(sessionId) {
+    await redisClient.del(`session:${sessionId}`);
+  },
+
+  // Stats operations
+  async getProductStats() {
+    const allProducts = await this.getAllProducts();
+    const categories = {};
+    let totalValue = 0;
+    let lowStockCount = 0;
+    
+    allProducts.forEach(product => {
+      // Category count
+      categories[product.category] = (categories[product.category] || 0) + 1;
+      
+      // Total inventory value
+      totalValue += (product.price * product.stockQuantity);
+      
+      // Low stock products (less than 10)
+      if (product.stockQuantity < 10) {
+        lowStockCount++;
+      }
+    });
+    
+    return {
+      totalProducts: allProducts.length,
+      categories,
+      totalInventoryValue: totalValue,
+      lowStockProducts: lowStockCount,
+      lastUpdated: new Date().toISOString()
+    };
+  }
+};
+
+module.exports = {
+  redisClient,
+  RedisUtils
+};

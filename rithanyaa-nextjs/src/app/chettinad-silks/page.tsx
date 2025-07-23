@@ -1,71 +1,9 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { getProductsByCategory } from '@/lib/database'
 
-// Chettinad silk products data
-const chettinadProducts = [
-  {
-    id: 1,
-    name: 'Traditional Chettinad Silk - Royal Blue',
-    price: 3455,
-    originalPrice: 4200,
-    image: '/images/products/chettinad1.jpg',
-    description: 'Handwoven traditional Chettinad silk with intricate gold border patterns',
-    features: ['Pure Silk', 'Handwoven', 'Traditional Motifs', 'Gold Zari Border'],
-    badge: 'Featured'
-  },
-  {
-    id: 2,
-    name: 'Elegant Chettinad - Emerald Green',
-    price: 2999,
-    originalPrice: 3500,
-    image: '/images/products/chettinad2.jpg',
-    description: 'Beautiful emerald green Chettinad silk with contemporary appeal',
-    features: ['Premium Quality', 'Rich Colors', 'Comfortable Fabric', 'Modern Design'],
-    badge: 'Bestseller'
-  },
-  {
-    id: 3,
-    name: 'Classic Chettinad - Maroon',
-    price: 4299,
-    originalPrice: 5200,
-    image: '/images/products/chettinad1.jpg',
-    description: 'Classic maroon Chettinad silk perfect for special occasions',
-    features: ['Wedding Special', 'Rich Texture', 'Traditional Weave', 'Premium Finish'],
-    badge: 'Premium'
-  },
-  {
-    id: 4,
-    name: 'Designer Chettinad - Pink',
-    price: 3799,
-    originalPrice: 4500,
-    image: '/images/products/chettinad2.jpg',
-    description: 'Designer pink Chettinad silk with modern geometric patterns',
-    features: ['Designer Collection', 'Unique Patterns', 'Soft Texture', 'Contemporary'],
-    badge: 'New'
-  },
-  {
-    id: 5,
-    name: 'Royal Chettinad - Purple',
-    price: 5499,
-    originalPrice: 6800,
-    image: '/images/products/chettinad1.jpg',
-    description: 'Royal purple Chettinad silk with heavy gold work',
-    features: ['Heavy Gold Work', 'Royal Collection', 'Premium Silk', 'Bridal Special'],
-    badge: 'Exclusive'
-  },
-  {
-    id: 6,
-    name: 'Traditional Chettinad - Yellow',
-    price: 2799,
-    originalPrice: 3200,
-    image: '/images/products/chettinad2.jpg',
-    description: 'Bright yellow Chettinad silk with traditional temple motifs',
-    features: ['Temple Motifs', 'Bright Colors', 'Traditional Design', 'Festival Special'],
-    badge: 'Traditional'
-  }
-]
-
-export default function ChettinadSilks() {
+export default async function ChettinadSilks() {
+  const chettinadProducts = await getProductsByCategory('Chettinad Silks')
   return (
     <div className="min-h-screen bg-gradient-to-br from-accent-cream via-white to-primary-50">
       {/* Hero Section */}
@@ -156,7 +94,7 @@ export default function ChettinadSilks() {
                 
                 <div className="relative h-80 overflow-hidden">
                   <Image
-                    src={product.image}
+                    src={product.images?.[0] || '/images/products/default.jpg'}
                     alt={product.name}
                     fill
                     className="object-cover group-hover:scale-110 transition-transform duration-500"
@@ -168,11 +106,11 @@ export default function ChettinadSilks() {
                     {product.name}
                   </h3>
                   <p className="text-sm text-neutral-600 mb-4 leading-relaxed">
-                    {product.description}
+                    {product.description?.slice(0, 100)}...
                   </p>
                   
                   <div className="flex flex-wrap gap-1 mb-4">
-                    {product.features.slice(0, 2).map((feature) => (
+                    {product.features?.slice(0, 2).map((feature) => (
                       <span key={feature} className="text-xs bg-primary-100 text-primary-700 px-2 py-1 rounded">
                         {feature}
                       </span>

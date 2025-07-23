@@ -1,45 +1,10 @@
+'use client'
+
 import Image from 'next/image'
 import Link from 'next/link'
+import { useFeaturedProducts } from '@/lib/products-provider'
+import { Product } from '@/data/products'
 
-// Featured products data
-const featuredProducts = [
-  {
-    id: 1,
-    name: 'Ivory - Chettinad Silk',
-    price: 3455,
-    originalPrice: 4200,
-    image: '/images/products/chettinad1.jpg',
-    category: 'Chettinad Silks',
-    badge: 'Featured'
-  },
-  {
-    id: 2,
-    name: 'Elegant Soft Sico',
-    price: 2499,
-    originalPrice: 3100,
-    image: '/images/products/chettinad2.jpg',
-    category: 'Soft Sico',
-    badge: 'Bestseller'
-  },
-  {
-    id: 3,
-    name: 'Traditional Ikath',
-    price: 2365,
-    originalPrice: 2800,
-    image: '/images/products/ikath1.jpg',
-    category: 'Ikath',
-    badge: 'New'
-  },
-  {
-    id: 4,
-    name: 'Designer Ikath',
-    price: 4299,
-    originalPrice: 5200,
-    image: '/images/products/ikath2.jpg',
-    category: 'Ikath',
-    badge: 'Premium'
-  }
-]
 
 // Collections data
 const collections = [
@@ -66,11 +31,13 @@ const collections = [
   }
 ]
 
+
 export default function Home() {
+  const featuredProducts = useFeaturedProducts()
   return (
     <div className="min-h-screen bg-gradient-to-br from-accent-cream via-white to-primary-50">
-      {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center bg-gradient-to-r from-primary-800 to-primary-600 text-white">
+      {/* Hero Section - 'relative' class has been removed here */}
+      <section className="h-screen flex items-center justify-center bg-gradient-to-r from-primary-800 to-primary-600 text-white">
         <div className="absolute inset-0">
           <Image
             src="/images/hero/hero1.png"
@@ -97,6 +64,7 @@ export default function Home() {
         </div>
       </section>
 
+
       {/* Featured Products Section */}
       <section className="section-padding bg-white">
         <div className="container-custom">
@@ -107,21 +75,27 @@ export default function Home() {
             </p>
           </div>
 
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {featuredProducts.map((product) => (
-              <div key={product.id} className="silk-card group">
+            {featuredProducts.map((product: Product) => (
+              <Link
+                key={product.id}
+                href={`/products/${product.slug}`}
+                className="silk-card group"
+              >
                 {product.badge && (
                   <div className="product-badge">{product.badge}</div>
                 )}
                 
                 <div className="relative h-80 overflow-hidden">
                   <Image
-                    src={product.image}
+                    src={product.images[0]}
                     alt={product.name}
                     fill
                     className="object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                 </div>
+
 
                 <div className="p-6">
                   <span className="text-sm font-medium text-primary-600">{product.category}</span>
@@ -136,12 +110,13 @@ export default function Home() {
                     </span>
                   </div>
                   <button className="btn-primary w-full py-2">
-                    Add to Cart
+                    View Product
                   </button>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
+
 
           <div className="text-center mt-12">
             <Link href="/catalog" className="btn-outline">
@@ -150,6 +125,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+
 
       {/* Collections Section */}
       <section className="section-padding bg-primary-50">
@@ -160,6 +136,7 @@ export default function Home() {
               Explore our curated collections, each telling a unique story of Indian textile heritage.
             </p>
           </div>
+
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {collections.map((collection) => (
@@ -199,6 +176,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+
 
       {/* Features Section */}
       <section className="section-padding bg-white">

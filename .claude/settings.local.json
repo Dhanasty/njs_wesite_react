@@ -15,7 +15,16 @@
       "Bash(mv:*)",
       "Bash(taskkill:*)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(copy .env.example .env)",
+      "Bash(npm start)",
+      "Bash(node:*)",
+      "Bash(npm install:*)",
+      "Bash(timeout:*)",
+      "Bash(powershell:*)",
+      "Bash(wmic:*)",
+      "mcp__ide__getDiagnostics",
+      "Bash(xcopy:*)"
     ],
     "deny": []
   }
