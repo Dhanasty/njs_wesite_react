@@ -13,6 +13,8 @@ const authRoutes = require('./routes/auth-mongo');
 const productRoutes = require('./routes/products-mongo');
 const uploadRoutes = require('./routes/upload');
 const publicRoutes = require('./routes/public-mongo');
+const orderRoutes = require('./routes/orders');
+const inventoryRoutes = require('./routes/inventory');
 const { errorHandler } = require('./middleware/errorHandler');
 const { authenticateToken } = require('./middleware/auth-mongo');
 
@@ -36,7 +38,7 @@ const limiter = rateLimit({
 // CORS configuration
 const corsOptions = {
   origin: function (origin, callback) {
-    const allowedOrigins = (process.env.CORS_ORIGINS || 'http://localhost:3000').split(',');
+    const allowedOrigins = (process.env.CORS_ORIGINS || 'http://localhost:3000,http://localhost:3002').split(',');
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
@@ -77,11 +79,68 @@ app.get('/health', (req, res) => {
   });
 });
 
+// Debug endpoint for testing
+app.post('/api/test', (req, res) => {
+  console.log('Test endpoint hit:', req.body);
+  res.json({ success: true, message: 'Test endpoint working', data: req.body });
+});
+
+// Proxy route for Next.js images
+app.get('/proxy/nextjs-images/*', (req, res) => {
+  const imagePath = req.path.replace('/proxy/nextjs-images', '');
+  const nextjsUrl = `http://localhost:3002${imagePath}`;
+  
+  console.log('Proxying image request:', nextjsUrl);
+  
+  // Use Node.js http module for better compatibility
+  const http = require('http');
+  const url = require('url');
+  
+  const parsedUrl = url.parse(nextjsUrl);
+  const options = {
+    hostname: parsedUrl.hostname,
+    port: parsedUrl.port || 80,
+    path: parsedUrl.path,
+    method: 'GET'
+  };
+  
+  const proxyReq = http.request(options, (proxyRes) => {
+    if (proxyRes.statusCode === 200) {
+      const contentType = proxyRes.headers['content-type'] || 'image/jpeg';
+      res.set('Content-Type', contentType);
+      res.set('Cache-Control', 'public, max-age=3600');
+      proxyRes.pipe(res);
+    } else {
+      res.status(404).json({ error: 'Image not found' });
+    }
+  });
+  
+  proxyReq.on('error', (error) => {
+    console.error('Image proxy error:', error);
+    res.status(500).json({ error: 'Failed to proxy image' });
+  });
+  
+  proxyReq.end();
+});
+
 // API routes
 app.use('/api/auth', authRoutes);
 app.use('/api/products', authenticateToken, productRoutes);
 app.use('/api/upload', authenticateToken, uploadRoutes);
 app.use('/api/public', publicRoutes);
+
+// Orders routes with conditional authentication
+app.use('/api/orders', (req, res, next) => {
+  // Allow POST requests from external sources (Next.js site) without authentication
+  if (req.method === 'POST') {
+    next();
+  } else {
+    // Require authentication for GET, PUT, DELETE operations
+    authenticateToken(req, res, next);
+  }
+}, orderRoutes);
+
+app.use('/api/inventory', authenticateToken, inventoryRoutes);
 
 // Serve React app in production
 if (process.env.NODE_ENV === 'production') {

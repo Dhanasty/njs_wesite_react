@@ -9,7 +9,8 @@ import {
   Menu, 
   X, 
   LogOut,
-  User
+  User,
+  ShoppingBag
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 
@@ -22,6 +23,7 @@ const Layout = ({ children }) => {
   const navigation = [
     { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
     { name: 'Products', href: '/products', icon: Package },
+    { name: 'Order History', href: '/orders', icon: ShoppingBag },
     { name: 'Analytics', href: '/analytics', icon: BarChart3 },
     { name: 'Settings', href: '/settings', icon: Settings },
   ]

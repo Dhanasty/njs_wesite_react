@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import WeavingMachine3D from '@/components/WeavingMachine3D'
 
 const values = [
   {
@@ -132,6 +133,25 @@ export default function About() {
                 className="object-cover"
               />
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 3D Weaving Machine Section */}
+      <section className="section-padding bg-primary-50">
+        <div className="container-custom">
+          <div className="text-center mb-8">
+            <h2 className="section-title">Traditional Weaving Process</h2>
+            <p className="section-subtitle">
+              Explore our traditional weaving machine and understand the craftsmanship behind every saree
+            </p>
+          </div>
+          <WeavingMachine3D />
+          <div className="text-center">
+            <p className="text-lg text-neutral-600 max-w-3xl mx-auto">
+              This interactive 3D model showcases the traditional weaving machines used by our skilled artisans. 
+              You can rotate, zoom, and explore to see the intricate details of the equipment that creates our beautiful silk sarees.
+            </p>
           </div>
         </div>
       </section>

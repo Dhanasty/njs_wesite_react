@@ -5,6 +5,7 @@ import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import Products from './pages/Products'
 import ProductForm from './pages/ProductForm'
+import Orders from './pages/Orders'
 import Analytics from './pages/Analytics'
 import Settings from './pages/Settings'
 import LoadingSpinner from './components/LoadingSpinner'
@@ -32,6 +33,7 @@ function App() {
         <Route path="/products" element={<Products />} />
         <Route path="/products/new" element={<ProductForm />} />
         <Route path="/products/edit/:id" element={<ProductForm />} />
+        <Route path="/orders" element={<Orders />} />
         <Route path="/analytics" element={<Analytics />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="*" element={<Navigate to="/dashboard" replace />} />

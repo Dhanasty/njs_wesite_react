@@ -1,0 +1,74 @@
+[
+  {
+    "id": "order_1753306082717_pgwwrfadg",
+    "orderId": "order_Qwenag5fz6E30R",
+    "paymentId": "pay_QwennCDsfr52En",
+    "amount": 2499,
+    "discount": 0,
+    "finalAmount": 2499,
+    "status": "completed",
+    "paymentStatus": "completed",
+    "items": [
+      {
+        "name": "Elegant Soft Sico",
+        "price": 2499,
+        "originalPrice": 3100,
+        "image": "/images/products/softsico1.jpg",
+        "category": "Soft Sico",
+        "slug": "elegant-soft-sico",
+        "id": "undefined-default-1753305988428",
+        "quantity": 1
+      }
+    ],
+    "customerDetails": {
+      "firstName": "dhanasekar",
+      "lastName": "s",
+      "email": "dhanasty@gmail.com",
+      "phone": "63815 72358",
+      "address": "Nava Jothi silks, Dharapuram Main Road, Near Usha theatre Junction, Tirupur.",
+      "city": "TIRUPPUR",
+      "state": "TN",
+      "pincode": "641604",
+      "country": "India",
+      "notes": ""
+    },
+    "createdAt": "2025-07-23T21:28:02.775Z",
+    "updatedAt": "2025-07-23T21:30:44.093Z"
+  },
+  {
+    "id": "order_1753306615838_nqy328s83",
+    "orderId": "order_Qwex1IRGBkI6Nz",
+    "paymentId": "pay_QwexCTa5TkFi5w",
+    "amount": 3455,
+    "discount": 0,
+    "finalAmount": 3455,
+    "status": "completed",
+    "paymentStatus": "completed",
+    "items": [
+      {
+        "name": "Ivory - Chettinad Silk",
+        "price": 3455,
+        "originalPrice": 4200,
+        "image": "/images/products/chettinad1.jpg",
+        "category": "Chettinad Silks",
+        "slug": "ivory-chettinad-silk",
+        "id": "undefined-default-1753306568661",
+        "quantity": 1
+      }
+    ],
+    "customerDetails": {
+      "firstName": "dhanasekar",
+      "lastName": "s",
+      "email": "admin@navajothisilks.com",
+      "phone": "63815 72358",
+      "address": "Nava Jothi silks, Dharapuram Main Road, Near Usha theatre Junction, Tirupur.",
+      "city": "TIRUPPUR",
+      "state": "TN",
+      "pincode": "641604",
+      "country": "India",
+      "notes": ""
+    },
+    "createdAt": "2025-07-23T21:36:56.798Z",
+    "updatedAt": "2025-07-23T21:36:56.798Z"
+  }
+]

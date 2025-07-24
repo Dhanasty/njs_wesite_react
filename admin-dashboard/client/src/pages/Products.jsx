@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
-import { productsService } from '../services/api'
+import { productsService, handleAPIError, handleAPISuccess } from '../services/api'
 import LoadingSpinner from '../components/LoadingSpinner'
 import { Plus, Search, Edit, Trash2, Eye } from 'lucide-react'
 import { Package } from 'lucide-react';
@@ -9,6 +9,7 @@ import { Package } from 'lucide-react';
 const Products = () => {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('all')
+  const queryClient = useQueryClient()
 
   const { data: productsData, isLoading } = useQuery({
     queryKey: ['products', searchQuery, selectedCategory],
@@ -26,12 +27,34 @@ const Products = () => {
     }
   })
 
+  // Delete product mutation
+  const deleteMutation = useMutation({
+    mutationFn: (productId) => productsService.delete(productId),
+    onSuccess: (response) => {
+      handleAPISuccess(response, 'Product deleted successfully')
+      queryClient.invalidateQueries(['products'])
+    },
+    onError: (error) => {
+      handleAPIError(error, 'Failed to delete product')
+    }
+  })
+
   const categories = [
     { value: 'all', label: 'All Categories' },
     { value: 'Chettinad Silks', label: 'Chettinad Silks' },
     { value: 'Soft Sico', label: 'Soft Sico' },
     { value: 'Ikath', label: 'Ikath' }
   ]
+
+  const handleDeleteProduct = (product) => {
+    console.log('Delete product called with:', product)
+    console.log('Product ID:', product.id || product._id)
+    if (window.confirm(`Are you sure you want to delete "${product.name}"? This action cannot be undone.`)) {
+      const productId = product.id || product._id
+      console.log('Sending delete request for ID:', productId)
+      deleteMutation.mutate(productId)
+    }
+  }
 
   const getStockBadge = (quantity) => {
     if (quantity <= 5) return 'bg-red-100 text-red-800'
@@ -169,7 +192,11 @@ const Products = () => {
                       >
                         <Edit className="h-4 w-4" />
                       </Link>
-                      <button className="p-2 text-neutral-600 hover:text-red-600 rounded-lg hover:bg-red-50">
+                      <button 
+                        onClick={() => handleDeleteProduct(product)}
+                        disabled={deleteMutation.isLoading}
+                        className="p-2 text-neutral-600 hover:text-red-600 rounded-lg hover:bg-red-50 disabled:opacity-50"
+                      >
                         <Trash2 className="h-4 w-4" />
                       </button>
                     </div>

@@ -171,9 +171,13 @@ export default function CartSidebar() {
 
                           {/* Action buttons */}
                           <div className="space-y-3">
-                            <button className="btn-primary w-full py-3">
+                            <Link
+                              href="/cart"
+                              onClick={closeCart}
+                              className="btn-primary w-full py-3 text-center block"
+                            >
                               Proceed to Checkout
-                            </button>
+                            </Link>
                             <Link
                               href="/catalog"
                               onClick={closeCart}

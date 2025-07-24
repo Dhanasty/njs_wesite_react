@@ -24,7 +24,8 @@
       "Bash(powershell:*)",
       "Bash(wmic:*)",
       "mcp__ide__getDiagnostics",
-      "Bash(xcopy:*)"
+      "Bash(xcopy:*)",
+      "Bash(npx tsc:*)"
     ],
     "deny": []
   }

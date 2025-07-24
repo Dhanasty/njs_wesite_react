@@ -182,37 +182,40 @@ export default function Home() {
       <section className="section-padding bg-white">
         <div className="container-custom">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="text-center group hover:bg-primary-50 p-8 rounded-xl transition-all duration-300">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-100 text-primary-600 rounded-full mb-4 group-hover:bg-primary-500 group-hover:text-white transition-all duration-300">
-                🚚
+            {[
+              {
+                id: 'free-shipping',
+                icon: '🚚',
+                title: 'Free Shipping',
+                description: 'On orders above ₹2000'
+              },
+              {
+                id: 'quality-assured',
+                icon: '🛡️',
+                title: 'Quality Assured',
+                description: 'Authentic silk guarantee'
+              },
+              {
+                id: 'easy-returns',
+                icon: '💝',
+                title: 'Easy Returns',
+                description: '30-day return policy'
+              },
+              {
+                id: 'support',
+                icon: '📞',
+                title: '24/7 Support',
+                description: 'Customer service'
+              }
+            ].map((feature) => (
+              <div key={feature.id} className="text-center group hover:bg-primary-50 p-8 rounded-xl transition-all duration-300">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-100 text-primary-600 rounded-full mb-4 group-hover:bg-primary-500 group-hover:text-white transition-all duration-300">
+                  {feature.icon}
+                </div>
+                <h3 className="font-display text-lg font-semibold text-primary-900 mb-2">{feature.title}</h3>
+                <p className="text-neutral-600">{feature.description}</p>
               </div>
-              <h3 className="font-display text-lg font-semibold text-primary-900 mb-2">Free Shipping</h3>
-              <p className="text-neutral-600">On orders above ₹2000</p>
-            </div>
-            
-            <div className="text-center group hover:bg-primary-50 p-8 rounded-xl transition-all duration-300">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-100 text-primary-600 rounded-full mb-4 group-hover:bg-primary-500 group-hover:text-white transition-all duration-300">
-                🛡️
-              </div>
-              <h3 className="font-display text-lg font-semibold text-primary-900 mb-2">Quality Assured</h3>
-              <p className="text-neutral-600">Authentic silk guarantee</p>
-            </div>
-            
-            <div className="text-center group hover:bg-primary-50 p-8 rounded-xl transition-all duration-300">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-100 text-primary-600 rounded-full mb-4 group-hover:bg-primary-500 group-hover:text-white transition-all duration-300">
-                💝
-              </div>
-              <h3 className="font-display text-lg font-semibold text-primary-900 mb-2">Easy Returns</h3>
-              <p className="text-neutral-600">30-day return policy</p>
-            </div>
-            
-            <div className="text-center group hover:bg-primary-50 p-8 rounded-xl transition-all duration-300">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-100 text-primary-600 rounded-full mb-4 group-hover:bg-primary-500 group-hover:text-white transition-all duration-300">
-                📞
-              </div>
-              <h3 className="font-display text-lg font-semibold text-primary-900 mb-2">24/7 Support</h3>
-              <p className="text-neutral-600">Customer service</p>
-            </div>
+            ))}
           </div>
         </div>
       </section>

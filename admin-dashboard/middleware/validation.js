@@ -148,8 +148,10 @@ const validateStockUpdate = [
 // Product ID parameter validation
 const validateProductId = [
   param('id')
-    .matches(/^product:[0-9]+:[a-zA-Z0-9]+$/)
-    .withMessage('Invalid product ID format'),
+    .notEmpty()
+    .withMessage('Product ID is required')
+    .isLength({ min: 1 })
+    .withMessage('Product ID cannot be empty'),
   handleValidationErrors
 ];
 

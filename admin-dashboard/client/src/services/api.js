@@ -77,6 +77,24 @@ export const uploadService = {
   getStats: () => authAPI.get('/upload/stats')
 }
 
+// Orders API
+export const ordersService = {
+  getAll: () => authAPI.get('/orders'),
+  getById: (id) => authAPI.get(`/orders/${id}`),
+  updateStatus: (id, status) => authAPI.put(`/orders/${id}/status`, { status }),
+  getStats: () => authAPI.get('/orders/stats')
+}
+
+// Inventory API
+export const inventoryService = {
+  getAll: () => authAPI.get('/inventory'),
+  getById: (productId) => authAPI.get(`/inventory/${productId}`),
+  restock: (productId, quantity) => authAPI.post('/inventory/restock', { productId, quantity }),
+  update: (productId, data) => authAPI.put(`/inventory/${productId}`, data),
+  adjustStock: (items, operation) => authAPI.post('/inventory/adjust-stock', { items, operation }),
+  getStats: () => authAPI.get('/inventory/stats')
+}
+
 // Generic API error handler
 export const handleAPIError = (error, defaultMessage = 'An error occurred') => {
   const message = error.response?.data?.message || error.message || defaultMessage
